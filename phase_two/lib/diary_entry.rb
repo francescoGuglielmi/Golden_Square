@@ -20,6 +20,7 @@ class DiaryEntry
   end
 
   def reading_time(wpm) 
+    raise "wpm has to be positive" unless wpm.positive?
     (count_words / wpm.to_f).ceil
   end
 
@@ -28,6 +29,9 @@ class DiaryEntry
     words = wpm * minutes
     chunk = @contents.split.slice(@position,words)
     @position += words
+    if @position >= @contents.split.length
+      @position = 0
+    end
     return chunk.join(" ")
   end
 end
