@@ -1,73 +1,45 @@
 # Structure
 
 ```ruby
-class Diary
+class TodoList
   def initialize
   end
 
-  def add(entry) # entry is an instance of DiaryEntry
+  def add(todo) # todo is an instance of Todo
     # Returns nothing
   end
 
-  def all
-    # Returns a list of instances of DiaryEntry
+  def incomplete
+    # Returns all non-done todos
   end
 
-  def count_words
-    # Returns the number of words in all diary entries
-    # HINT: This method should make use of the `count_words` method on DiaryEntry.
+  def complete
+    # Returns all complete todos
   end
 
-  def reading_time(wpm) # wpm is an integer representing
-                        # the number of words the user can read per minute
-    # Returns an integer representing an estimate of the reading time in minutes
-    # if the user were to read all entries in the diary.
-  end
-
-  def find_best_entry_for_reading_time(wpm, minutes)
-        # `wpm` is an integer representing the number of words the user can read
-        # per minute.
-        # `minutes` is an integer representing the number of minutes the user
-        # has to read.
-    # Returns an instance of diary entry representing the entry that is closest 
-    # to, but not over, the length that the user could read in the minutes they
-    # have available given their reading speed.
+  def give_up!
+    # Marks all todos as complete
   end
 end
 
-# File: lib/diary_entry.rb
-class DiaryEntry
-  def initialize(title, contents) # title, contents are strings
-    # ...
+# File: lib/todo.rb
+class Todo
+  def initialize(task) # task is a string
+    # @completed = []
   end
 
-  def title
-    # Returns the title as a string
+  def task
+    # Returns the task as a string
   end
 
-  def contents
-    # Returns the contents as a string
+  def mark_done!
+    # Marks the todo as done
+    # Returns nothing          
   end
 
-  def count_words
-    # Returns the number of words in the contents as an integer
-  end
-
-  def reading_time(wpm) # wpm is an integer representing
-                        # the number of words the user can read per minute
-    # Returns an integer representing an estimate of the reading time in minutes
-    # for the contents at the given wpm.
-  end
-
-  def reading_chunk(wpm, minutes) # `wpm` is an integer representing the number
-                                  # of words the user can read per minute
-                                  # `minutes` is an integer representing the
-                                  # number of minutes the user has to read
-    # Returns a string with a chunk of the contents that the user could read
-    # in the given number of minutes.
-    # If called again, `reading_chunk` should return the next chunk, skipping
-    # what has already been read, until the contents is fully read.
-    # The next call after that it should restart from the beginning.
+  def done?
+    # Returns true if the task is done
+    # Otherwise, false
   end
 end
 ```
@@ -75,41 +47,70 @@ end
 # Examples 
 
 ```ruby
-# Example 1: returns a list of lists containing the title and the body
+# Todo examples
 
-diary = Diary.new
-entry1 = DiaryEntry.new("title1","some quite long text that goes in here.")
-entry2 = DiaryEntry.new("title2","some other long text that goes in a new DiaryEntry instance")
-diary.add(entry1)
-diary.add(entry2)
-diary.all 
-# => [["title1", "some quite long text that goes in here."], ["title2", "some other long text that goes in a new DiaryEntry instance"]]
- 
- # Example 2: returns the number of words in all diary entries
-diary = Diary.new
-entry1 = DiaryEntry.new("title1","some quite long text that goes in here.")
-entry2 = DiaryEntry.new("title2","some other long text that goes in a new DiaryEntry instance")
-diary.add(entry1)
-diary.add(entry2)
-diary.count_words
-# => 21
+# Example 1: it thorws an error if the argument is not a string
+todo = Todo.new(9)
+# => it thorws an error
 
-# Example 3: returns the amount of time in minutes to read all the DiaryEntry instances.
-diary = Diary.new
-entry1 = DiaryEntry.new("title1","some quite long text that goes in here.")
-entry2 = DiaryEntry.new("title2","some other long text that goes in a new DiaryEntry instance")
-diary.add(entry1)
-diary.add(entry2)
-diary.reading_time(5)
-# => ~ 4
+# Example 2: it returns the task as a string
+todo = Todo.new("washing up")
+todo.task
+# => returns "washing up"
 
-# Example 4: returns the closes entry to the speed and the time available to read.
-diary = Diary.new
-entry1 = DiaryEntry.new("title1","some quite long text that goes in here.")
-entry2 = DiaryEntry.new("title2","some other long text that goes in a new DiaryEntry instance")
-diary.add(entry1)
-diary.add(entry2)
-diary.find_best_entry_for_reading_time(5,2)
-# => entry1
+# Example 3: it marks the task as complete
+todo = Todo.new("washing up")
+todo.task
+todo.mark_done!
+# => it completes the todo
+
+# Example 4: it returns true if the task is done
+todo = Todo.new("washing up")
+todo.task
+todo.mark_done!
+todo.done?
+# => true
+
+# Example 5: it returns false if the task is not complete
+todo = Todo.new("washing up")
+todo.task
+todo.done?
+# => false
+
+# Todo_list examples
+
+# Example 1: if the argument of add is an instance of Todo
+todo_list = TodoList.new
+todo = Todo.new("hello")
+todo_list.add(todo)
+
+# Example 2: if the argument of add is the wrong class
+todo_list = TodoList.new
+random_class = Array.new
+todo_list.add(random_class)
+# => throws an error
+
+# Example 3: incomplete method returns nothing if no tasks are added
+todo_list = TodoList.new
+todo = Todo.new("hello")
+# => nil
+
+#Example 4: incomplete returns the whole list of todos if none of them is completed
+todo_list = TodoList.new
+todo1 = Todo.new("hello")
+todo2 = Todo.new("Hi mom")
+todo_list.add(todo1)
+todo_list.add(todo2)
+todo_list.incomplete
+# => [todo1, todo2]
+
+# Example 5: returns all the complete todos
+todo_list = TodoList.new
+todo1 = Todo.new("hello")
+todo2 = Todo.new("Hi mom")
+todo_list.add(todo1)
+todo_list.add(todo2)
+todo_list.complete
+# 
 
 ```

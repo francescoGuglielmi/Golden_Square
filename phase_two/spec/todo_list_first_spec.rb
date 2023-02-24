@@ -1,6 +1,6 @@
-require "todo_list1"
+require "todo_list_first"
 
-describe TodoList do
+describe "TodoList" do
   context "initialize method" do
     it "fails if the initialize parameter is not a string" do
       expect { TodoList.new(9) }.to raise_error "you need to initialize the class with a string!" 
@@ -74,3 +74,4 @@ describe TodoList do
     end
   end
 end
+
